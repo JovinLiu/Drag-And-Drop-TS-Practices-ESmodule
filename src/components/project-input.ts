@@ -1,11 +1,16 @@
-import { Component } from "./base-component.js";
-import { Validatable, validate } from "../util/validation.js";
-import { autobind } from "../decorators/autobind.js";
+import { something } from "./base-component.js";
+//如果使用default export导出时，导入时可以随意改名，不需要as
+import Cmp from "./base-component.js";
+//grouping来避免name collision
+import * as Validation from "../util/validation.js";
+//用aliases来避免name collision
+import { autobind as bind } from "../decorators/autobind.js";
 import { projectState } from "../state/project-state.js";
 
+console.log(something);
 // ProjectInput Class
 //声明T和U是Div和Form
-export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
+export class ProjectInput extends Cmp<HTMLDivElement, HTMLFormElement> {
   //选择mount之后的表单中的三个input元素
   titleInputElement: HTMLInputElement;
   descriptionInputElement: HTMLInputElement;
@@ -40,18 +45,18 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
     const enteredPeople = this.peopleInputElement.value;
 
     //·声明validate的option
-    const titleValidatable: Validatable = {
+    const titleValidatable: Validation.Validatable = {
       value: enteredTitle,
       required: true,
     };
 
-    const descriptionValidatable: Validatable = {
+    const descriptionValidatable: Validation.Validatable = {
       value: enteredDescription,
       required: true,
       minLength: 5,
     };
 
-    const peopleValidatable: Validatable = {
+    const peopleValidatable: Validation.Validatable = {
       value: +enteredPeople,
       required: true,
       min: 1,
@@ -60,9 +65,9 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
 
     if (
       //validate会返回true或者false
-      !validate(titleValidatable) ||
-      !validate(descriptionValidatable) ||
-      !validate(peopleValidatable)
+      !Validation.validate(titleValidatable) ||
+      !Validation.validate(descriptionValidatable) ||
+      !Validation.validate(peopleValidatable)
     ) {
       alert("Invalid input, please try again!");
       return;
@@ -78,7 +83,7 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
   }
 
   //·submitHandler的this不指向class，而是当前的event。需要添加autobind method decorator
-  @autobind
+  @bind
   private submitHandler(event: Event) {
     event.preventDefault();
     const userInput = this.gatherUserInput();

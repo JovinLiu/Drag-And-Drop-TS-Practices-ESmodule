@@ -2,7 +2,15 @@
 // 这里的component后面要被projectsItem，projectsList，projectsInput继承，这些子class中带有具体实现具体功能的方法和属性，所以这里component实际上提供了最抽象最通用的方法和属性。
 // 表单和list都有相似的部分，这里创建一个abstract class，标记成抽象class，不允许实例化。
 //T和U是某个类型的HTMLElement，但是不确定具体是什么类型，可以使用泛型声明是某种HTMLElement，然后后面继承的时候制定具体是哪种HTML element
-export abstract class Component<T extends HTMLElement, U extends HTMLElement> {
+
+//每个文件只能有一个default export，当然有default export的同时也可以用named export
+export const something = "123";
+
+//One thing per file时，可以使用default export
+export default abstract class Component<
+  T extends HTMLElement,
+  U extends HTMLElement
+> {
   //模版元素
   //这个模版的类型是确定的，一定是template，所以不需要使用泛型
   templateElement: HTMLTemplateElement;
